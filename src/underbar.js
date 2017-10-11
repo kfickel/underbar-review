@@ -285,9 +285,9 @@
     for (var i = 1; i < arguments.length; i++) {
       for (var key in arguments[i]) {
         if (!arguments[0][key]) {
-          if(Boolean(arguments[0][key]) === true) {
-            arguments[0][key] = arguments[i][key];
-          }
+          //if (Boolean(arguments[0][key])) {
+          arguments[0][key] = arguments[i][key];
+          //}
         }
       }
     }
