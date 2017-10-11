@@ -110,11 +110,47 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    //create an object to store unique elements
+    var obj = {};
+    //create array variable
+    var results = [];
+    //create an iterator variable
+    var iterator = iterator || _.identity;
+    
+    //for loop
+    for (var i = 0; i < array.length; i++) {
+      var iterated = iterator(array[i]);
+      //create a key and value for each input
+      if (typeof iterated !== 'number') {
+        if (!obj[iterated]) {
+          obj[iterated] = array[i];
+        }
+      } else {
+        obj[iterated] = iterated;
+      }
+    }
+    //for in loop look for keys
+    for (var key in obj) {
+      //push the values into the array variable  
+      results.push(obj[key]);
+    }
+    //return the variable
+    return results;
   };
+
+  
 
 
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
+    //variable array of results
+    var results = [];
+    //call each and make iterator a function where we push the value to results
+    _.each(collection, function(value) {
+      results.push(iterator(value));
+    });
+    //return array of results
+    return results;
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
@@ -159,6 +195,21 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      collection = collection.slice(1, collection.length);
+    }
+    _.each(collection, function(value) {
+      accumulator = iterator(accumulator, value);
+    });
+    return accumulator;
+    //if statement on whether accumulator to collection[0]
+      //for loop on the elements of collection--starting from collection[1]
+        //  accumulator = iterator(accumulator, item)
+    //else
+      //for loop on elements of collection--all
+        //accumulator = iterator(accumulator, item)
+
   };
 
   // Determine if the array or object contains a given value (using `===`).
